@@ -1,6 +1,8 @@
 // compile: g++ -std=c++14 -o pointers pointers.cpp
 #include <iostream>
 #include <string>
+#include <limits> //fixes bad stuff with bad inputs
+
 
 typedef struct Student {
     int id;
@@ -12,6 +14,7 @@ typedef struct Student {
 
 int promptInt(std::string message, int min, int max);
 double promptDouble(std::string message, double min, double max);
+void promptString(std::string message, std::string *output);
 void calculateStudentAverage(void *object, double *avg);
 
 int main(int argc, char **argv)
@@ -23,6 +26,11 @@ int main(int argc, char **argv)
 
     // Call `CalculateStudentAverage(???, ???)`
     // Output `average`
+    promptInt("Int Data Validation Test: ",1,10);
+    promptDouble("Double Data Validation Test: ",1,10);
+    std::string test;
+    promptString("Str Test: ",&test);
+    std::cout << test;
     return 0;
 }
 
@@ -36,16 +44,36 @@ int promptInt(std::string message, int min, int max)
     int value;
     std::cout << message;
     std::cin >> value;
-    if (value>=min && value<=max)
+    if (std::cin.fail()) // If it is invalid
     {
-        return value;
+        std::cin.clear(); //Clear error flags
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        std::cout << "Sorry, I cannot understand your answer"<< std::endl;
+        return promptInt(message, min, max); //reprompt
     }
-    else 
+    else // Otherwise it is valid 
     {
-        std::cout << "Invalid input. Enter a value between " << min << " and " << max << "." << std::endl;
-        return promptInt(message, min, max);
+        if(value>=min && value<=max) //Is it within range?
+        {
+            return value; // return Input
+        }
+        else // not within Range
+        {
+            std::cout << "Sorry, I cannot understand your answer"<< std::endl;
+            return promptInt(message, min, max); // reprompt
+        }
     }
 
+}
+/*
+    message: text to output as the prompt
+    output: pointer to a string, used to replace a value in main
+*/
+void promptString(std::string message, std::string *output)
+{
+    std::string input;
+    std::cout << message;
+    std::cin >> *output;
 }
 
 /*
@@ -58,14 +86,24 @@ double promptDouble(std::string message, double min, double max)
     double value;
     std::cout << message;
     std::cin >> value;
-    if (value>=min && value<=max)
+    if (std::cin.fail()) // if Invalid
     {
-        return value;
+        std::cin.clear(); //Clear those flags
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        std::cout << "Sorry, I cannot understand your answer"<< std::endl; //Yell at user
+        return promptDouble(message, min, max); //reprompt
     }
-    else
+    else // otherwise it is valud
     {
-        std::cout << "Invalid input. Enter a value between " << min << " and " << max << "." << std::endl;
-        return promptDouble(message, min, max);
+        if(value>=min && value<=max) //If within range
+        {
+            return value;
+        }
+        else //else it is out of range
+        {
+            std::cout << "Sorry, I cannot understand your answer"<< std::endl; //Yell at user
+            return promptDouble(message, min, max); //reprompt
+        }
     }
     return value;
 }
