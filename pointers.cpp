@@ -23,7 +23,6 @@ int main(int argc, char **argv)
 
     // Call `CalculateStudentAverage(???, ???)`
     // Output `average`
-
     return 0;
 }
 
@@ -34,7 +33,19 @@ int main(int argc, char **argv)
 */
 int promptInt(std::string message, int min, int max)
 {
-    // Code to prompt user for an int
+    int value;
+    std::cout << message;
+    std::cin >> value;
+    if (value>=min && value<=max)
+    {
+        return value;
+    }
+    else 
+    {
+        std::cout << "Invalid input. Enter a value between " << min << " and " << max << "." << std::endl;
+        return promptInt(message, min, max);
+    }
+
 }
 
 /*
@@ -44,7 +55,19 @@ int promptInt(std::string message, int min, int max)
 */
 double promptDouble(std::string message, double min, double max)
 {
-    // Code to prompt user for a double
+    double value;
+    std::cout << message;
+    std::cin >> value;
+    if (value>=min && value<=max)
+    {
+        return value;
+    }
+    else
+    {
+        std::cout << "Invalid input. Enter a value between " << min << " and " << max << "." << std::endl;
+        return promptDouble(message, min, max);
+    }
+    return value;
 }
 
 /*
