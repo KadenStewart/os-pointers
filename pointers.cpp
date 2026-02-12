@@ -55,6 +55,7 @@ int main(int argc, char **argv)
     // std::string test;
     // promptString("Str Test: ",&test);
     // std::cout << test;
+    delete[] grades;
     return 0;
 }
 
