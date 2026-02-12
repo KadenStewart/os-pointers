@@ -1,4 +1,7 @@
 // compile: g++ -std=c++14 -o pointers pointers.cpp
+//To Do:
+    // Validate that the name does not have numbers
+    // Ensure rounding is done correctly
 #include <iostream>
 #include <string>
 #include <limits> //fixes bad stuff with bad inputs
